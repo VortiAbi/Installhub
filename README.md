@@ -4,7 +4,7 @@
 
 > A simple and modern Windows application installer powered by WinGet.
 
-**Live:** http://installhub.xo.je/
+**Live:** https://installhub.xo.je/
 
 InstallHub makes setting up a new Windows PC easier.
 
@@ -178,7 +178,7 @@ See the `LICENSE` file for license information.
 
 ## Links
 
-**Website:** [http://installhub.xo.je/](http://installhub.xo.je/)
+**Website:** [https://installhub.xo.je/](https://installhub.xo.je/)
 
 **Source Code:** This repository
 
@@ -196,8 +196,5 @@ InstallHub uses WinGet to request application installations. Always verify the p
 
 *Set up your Windows PC faster.*
 
-```
 
-
-```
 
