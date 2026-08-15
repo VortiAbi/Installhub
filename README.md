@@ -1,45 +1,50 @@
 
-
 ````md
 # InstallHub
 
-A simple and modern Windows app installer powered by WinGet.
+> A simple and modern Windows application installer powered by WinGet.
 
-InstallHub helps you set up a new Windows PC without having to search for and install every application manually.
+**Live:** http://installhub.xo.je/
 
-Select the apps you need, generate a setup, and let WinGet handle the installation.
+InstallHub makes setting up a new Windows PC easier.
+
+Instead of manually searching for every application, you can select the applications you need and generate a ready-to-use installation setup using Microsoft's Windows Package Manager (WinGet).
 
 ---
 
 ## Features
 
-- Fast application search
+- Application search
 - Categories
-- Multi-select applications
-- WinGet installation commands
-- `.bat` setup generation
-- WinGet `.json` export
-- Verified / Manual Review package status
-- GitHub-inspired dark UI
+- Multi-app selection
+- WinGet command generation
+- `.bat` installer generation
+- WinGet JSON export
+- Package status information
+- GitHub-inspired dark interface
 - Responsive design
-- Large application catalog
+- Growing application catalog
 
 ---
 
-## How it works
+## How It Works
 
 1. Open InstallHub
-2. Search for an application
-3. Select the applications you want
-4. Click **Generate Setup**
-5. Choose a Batch installer or WinGet JSON
-6. Run the generated setup on your Windows PC
+2. Find the applications you want
+3. Select them
+4. Generate your setup
+5. Review the generated commands
+6. Run the setup on your Windows PC
+
+InstallHub does not directly host or redistribute the applications.
+
+The actual installation is handled by **WinGet**.
 
 ---
 
 ## Example
 
-You can select applications such as:
+For example, you can select:
 
 ```text
 Steam
@@ -54,84 +59,104 @@ Git
 PowerToys
 ````
 
-InstallHub then generates the required WinGet commands.
+InstallHub can generate commands such as:
 
 ```powershell
 winget install --id "Valve.Steam" -e
 winget install --id "Discord.Discord" -e
 winget install --id "Spotify.Spotify" -e
 winget install --id "Google.Chrome" -e
+winget install --id "Microsoft.VisualStudioCode" -e
 ```
+
+You can review the generated setup before running it.
 
 ---
 
 ## Requirements
 
 * Windows 10 or Windows 11
-* WinGet
+* Windows Package Manager (WinGet)
 * Internet connection
+
+WinGet is provided by Microsoft and is commonly available through the Windows App Installer.
+
+---
+
+## Security & Trust
+
+InstallHub is designed to keep the installation process transparent.
+
+InstallHub:
+
+* Does not host application installers
+* Does not upload your selected applications
+* Does not require an account
+* Uses WinGet package identifiers for installations
+* Shows the commands that will be generated
+* Allows you to review the generated setup before execution
+
+**Always review generated commands before running them.**
+
+Package availability and publisher information are determined by WinGet and its configured sources.
 
 ---
 
 ## Technology
 
-InstallHub is built with:
+InstallHub currently uses:
 
 * HTML
 * CSS
 * JavaScript
 * Windows Package Manager (WinGet)
 
-The basic version is completely static and does not require a backend.
+The website itself is a static application and does not require a backend for its basic functionality.
 
 ---
 
 ## AI-Assisted Development
 
-InstallHub was developed with the assistance of AI.
+InstallHub was developed with assistance from AI tools.
 
 AI was used to help with:
 
 * Development
-* UI design
+* UI and UX ideas
+* Code generation
 * Debugging
-* Feature ideas
 * Documentation
+* Feature planning
 
-The project is still reviewed, tested and maintained by humans.
+The project is reviewed and maintained by humans.
 
-AI is used as a development tool — not as a replacement for testing and development.
+AI assistance does not replace testing, verification or responsible development.
 
 ---
 
 ## Project Status
 
-**Version:** V5
+**Current Version:** V5
 
-InstallHub is currently under active development.
+InstallHub is an active project and is still being improved.
 
-The application catalog and features may change over time.
+The application catalog, interface and features may change over time.
 
 ---
 
 ## Roadmap
 
-* [ ] 250+ applications
-* [ ] Automatic WinGet package verification
+* [ ] Larger application catalog
+* [ ] Improved package verification
 * [ ] Favorites
 * [ ] Custom installation profiles
 * [ ] Gaming profile
 * [ ] Developer profile
-* [ ] Privacy profile
 * [ ] Streaming profile
-* [ ] Improved package validation
-* [ ] More customization options
-
----
-
-## License
-
-See the `LICENSE` file for details.
+* [ ] Privacy profile
+* [ ] Better package information
+* [ ] Improved setup generation
+* [ ] More application categories
 
 ---
 
@@ -139,12 +164,39 @@ See the `LICENSE` file for details.
 
 Suggestions, bug reports and improvements are welcome.
 
-Feel free to open an issue or submit a pull request.
+If you find a problem, please open a GitHub Issue.
+
+Pull requests are also welcome.
 
 ---
 
-**InstallHub — Set up your Windows PC faster.**
+## License
+
+See the `LICENSE` file for license information.
+
+---
+
+## Links
+
+**Website:** [http://installhub.xo.je/](http://installhub.xo.je/)
+
+**Source Code:** This repository
+
+---
+
+## Disclaimer
+
+InstallHub is an independent project and is not affiliated with Microsoft, Valve, Discord, Spotify, Google, or any other application publisher listed on the website.
+
+InstallHub uses WinGet to request application installations. Always verify the package, publisher and generated commands before installing software.
+
+---
+
+**InstallHub**
+
+*Set up your Windows PC faster.*
 
 ```
 
 
+```
