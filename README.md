@@ -200,3 +200,23 @@ InstallHub uses WinGet to request application installations. Always verify the p
 
 
 ```
+
+License
+
+InstallHub is released under the MIT License.
+
+See LICENSE for the full license text.
+
+<div align="center">
+
+InstallHub
+
+Set up your Windows PC faster.
+
+Open the website →
+
+</div> """
+
+path = Path("/mnt/data/README.md")
+path.write_text(readme, encoding="utf-8")
+print(f"Created: {path}")
