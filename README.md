@@ -1,4 +1,4 @@
-Klar — hier ist eine **cleanere, professionellere README**, eher wie bei einem modernen GitHub-Projekt:
+
 
 ````md
 # InstallHub
@@ -147,5 +147,4 @@ Feel free to open an issue or submit a pull request.
 
 ```
 
-Die würde ich genau so ins Repository als **`README.md`** setzen. Sie ist bewusst nicht mit unnötigen Emojis, riesigen Bannern oder viel Text überladen.
-```
+
