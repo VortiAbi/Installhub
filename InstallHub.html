@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InstallHub V5</title>
+
+<style>
+:root{
+    --bg:#0d1117;
+    --panel:#161b22;
+    --panel2:#1c2128;
+    --hover:#21262d;
+    --border:#30363d;
+    --border-light:#3d444d;
+    --text:#f0f6fc;
+    --text2:#c9d1d9;
+    --muted:#8b949e;
+    --green:#238636;
+    --green-hover:#2ea043;
+    --green-light:#3fb950;
+    --blue:#58a6ff;
+    --yellow:#d29922;
+    --red:#f85149;
+    --shadow:0 16px 45px rgba(0,0,0,.45);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    font-size:14px;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.header{
+    height:64px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    padding:0 22px;
+    gap:18px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(13,17,23,.96);
+    backdrop-filter:blur(12px);
+}
+
+.logo{
+    width:34px;
+    height:34px;
+    border:1px solid var(--border);
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    font-size:11px;
+    font-weight:700;
+}
+
+.brand{
+    font-weight:600;
+    white-space:nowrap;
+}
+
+.brand span{
+    color:var(--muted);
+    font-weight:400;
+}
+
+.search-wrap{
+    flex:1;
+    max-width:600px;
+    position:relative;
+}
+
+.search{
+    width:100%;
+    height:36px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:6px;
+    color:var(--text);
+    padding:0 45px 0 36px;
+    outline:none;
+}
+
+.search:focus{
+    border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(56,139,253,.15);
+}
+
+.search::placeholder{
+    color:var(--muted);
+}
+
+.search-icon{
+    position:absolute;
+    left:13px;
+    top:8px;
+    color:var(--muted);
+}
+
+.shortcut{
+    position:absolute;
+    right:9px;
+    top:7px;
+    border:1px solid var(--border);
+    color:var(--muted);
+    border-radius:4px;
+    padding:2px 6px;
+    font-size:11px;
+}
+
+.header-status{
+    margin-left:auto;
+    color:var(--muted);
+    font-size:12px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    white-space:nowrap;
+}
+
+.dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--green-light);
+}
+
+.layout{
+    max-width:1550px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:245px 1fr;
+}
+
+.sidebar{
+    min-height:calc(100vh - 64px);
+    border-right:1px solid var(--border);
+    padding:22px 14px;
+    position:sticky;
+    top:64px;
+    align-self:start;
+}
+
+.sidebar-title{
+    color:var(--muted);
+    text-transform:uppercase;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.06em;
+    padding:0 9px 9px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+
+.nav button{
+    border:0;
+    background:transparent;
+    color:var(--text2);
+    padding:7px 9px;
+    border-radius:6px;
+    text-align:left;
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.nav button:hover{
+    background:var(--hover);
+}
+
+.nav button.active{
+    background:var(--hover);
+    color:var(--text);
+    font-weight:600;
+}
+
+.nav button.active .nav-icon{
+    color:var(--green-light);
+}
+
+.nav-icon{
+    width:18px;
+    color:var(--muted);
+    text-align:center;
+    font-size:11px;
+}
+
+.nav-count{
+    margin-left:auto;
+    color:var(--muted);
+    font-size:11px;
+}
+
+.sidebar-line{
+    height:1px;
+    background:var(--border);
+    margin:20px 8px;
+}
+
+.sidebar-info{
+    padding:0 9px;
+    color:var(--muted);
+    line-height:1.55;
+    font-size:12px;
+}
+
+.main{
+    padding:32px 38px 150px;
+    min-width:0;
+}
+
+.content{
+    max-width:1150px;
+    margin:auto;
+}
+
+.page-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:25px;
+    padding-bottom:22px;
+    border-bottom:1px solid var(--border);
+}
+
+h1{
+    margin:0 0 8px;
+    font-size:27px;
+    letter-spacing:-.025em;
+}
+
+.description{
+    margin:0;
+    color:var(--muted);
+    line-height:1.55;
+    max-width:760px;
+}
+
+.actions{
+    display:flex;
+    gap:8px;
+}
+
+.btn{
+    border:1px solid var(--border);
+    background:var(--panel);
+    color:var(--text);
+    border-radius:6px;
+    padding:7px 12px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.btn:hover{
+    background:var(--hover);
+    border-color:var(--border-light);
+}
+
+.btn.primary{
+    background:var(--green);
+    border-color:rgba(255,255,255,.08);
+    color:white;
+}
+
+.btn.primary:hover{
+    background:var(--green-hover);
+}
+
+.toolbar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:16px 0;
+}
+
+.selected-info{
+    margin-right:auto;
+    color:var(--muted);
+    font-size:12px;
+}
+
+.selected-info strong{
+    color:var(--text);
+}
+
+.section-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--border);
+    padding:13px 0;
+}
+
+.section-title{
+    font-size:16px;
+    font-weight:600;
+}
+
+.section-count{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
+    margin-top:14px;
+}
+
+.card{
+    min-height:165px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:14px;
+    position:relative;
+    transition:.12s;
+}
+
+.card:hover{
+    background:var(--hover);
+    border-color:#484f58;
+}
+
+.card.selected{
+    border-color:var(--green);
+    box-shadow:inset 0 0 0 1px rgba(63,185,80,.12);
+}
+
+.checkbox{
+    position:absolute;
+    right:13px;
+    top:13px;
+    width:18px;
+    height:18px;
+    border:1px solid var(--border-light);
+    background:var(--bg);
+    border-radius:4px;
+    display:grid;
+    place-items:center;
+    color:transparent;
+    font-size:11px;
+}
+
+.card.selected .checkbox{
+    background:var(--green);
+    border-color:var(--green);
+    color:#fff;
+}
+
+.app-top{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding-right:25px;
+}
+
+.icon{
+    width:43px;
+    height:43px;
+    background:#fff;
+    border-radius:7px;
+    padding:7px;
+    display:grid;
+    place-items:center;
+    flex-shrink:0;
+}
+
+.icon img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.fallback{
+    color:#111;
+    font-weight:700;
+    font-size:11px;
+}
+
+.app-name{
+    font-weight:600;
+    font-size:13px;
+}
+
+.publisher{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:3px;
+}
+
+.app-description{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.5;
+    margin-top:12px;
+    min-height:34px;
+}
+
+.card-bottom{
+    margin-top:11px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.badge{
+    font-size:10px;
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:2px 7px;
+    color:var(--muted);
+}
+
+.badge.verified{
+    color:var(--green-light);
+    border-color:rgba(63,185,80,.3);
+}
+
+.badge.review{
+    color:var(--yellow);
+    border-color:rgba(210,153,34,.3);
+}
+
+.select-label{
+    color:var(--muted);
+    font-size:10px;
+}
+
+.card.selected .select-label{
+    color:var(--green-light);
+}
+
+.empty{
+    display:none;
+    text-align:center;
+    padding:70px 20px;
+    color:var(--muted);
+}
+
+.empty h3{
+    color:var(--text);
+}
+
+.bottom-bar{
+    position:fixed;
+    left:50%;
+    bottom:20px;
+    transform:translate(-50%,130px);
+    opacity:0;
+    width:min(850px,calc(100% - 30px));
+    background:#161b22;
+    border:1px solid #484f58;
+    border-radius:7px;
+    padding:10px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    box-shadow:var(--shadow);
+    transition:.2s;
+    z-index:200;
+}
+
+.bottom-bar.show{
+    transform:translate(-50%,0);
+    opacity:1;
+}
+
+.bottom-icon{
+    width:34px;
+    height:34px;
+    display:grid;
+    place-items:center;
+    background:rgba(35,134,54,.15);
+    color:var(--green-light);
+    border-radius:6px;
+}
+
+.bottom-text{
+    flex:1;
+}
+
+.bottom-title{
+    font-size:12px;
+    font-weight:600;
+}
+
+.bottom-sub{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:2px;
+}
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(1,4,9,.75);
+    z-index:500;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.overlay.open{
+    display:flex;
+}
+
+.modal{
+    width:min(900px,100%);
+    max-height:90vh;
+    overflow:hidden;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:7px;
+    box-shadow:var(--shadow);
+}
+
+.modal-head{
+    padding:14px 16px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.modal-title{
+    font-weight:600;
+}
+
+.close{
+    background:transparent;
+    border:0;
+    color:var(--muted);
+    font-size:20px;
+}
+
+.modal-tabs{
+    display:flex;
+    border-bottom:1px solid var(--border);
+}
+
+.tab{
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    padding:10px 14px;
+    font-size:12px;
+}
+
+.tab.active{
+    color:var(--text);
+    border-bottom:2px solid var(--green-light);
+}
+
+.modal-body{
+    padding:16px;
+}
+
+.code{
+    width:100%;
+    min-height:320px;
+    resize:vertical;
+    background:#010409;
+    border:1px solid var(--border);
+    border-radius:6px;
+    color:#e6edf3;
+    padding:14px;
+    outline:none;
+    font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+
+.modal-footer{
+    border-top:1px solid var(--border);
+    padding:12px 16px;
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+}
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:9px 12px;
+    font-size:12px;
+    box-shadow:var(--shadow);
+    transform:translateY(80px);
+    opacity:0;
+    transition:.2s;
+    z-index:700;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+@media(max-width:1100px){
+    .grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+}
+
+@media(max-width:850px){
+    .layout{
+        display:block;
+    }
+
+    .sidebar{
+        min-height:auto;
+        position:static;
+        border-right:0;
+        border-bottom:1px solid var(--border);
+        overflow-x:auto;
+        padding:8px;
+    }
+
+    .sidebar-title,
+    .sidebar-line,
+    .sidebar-info{
+        display:none;
+    }
+
+    .nav{
+        flex-direction:row;
+        width:max-content;
+    }
+
+    .nav button{
+        white-space:nowrap;
+    }
+
+    .header-status{
+        display:none;
+    }
+
+    .main{
+        padding:24px 16px 140px;
+    }
+}
+
+@media(max-width:650px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .page-head{
+        flex-direction:column;
+    }
+
+    .actions{
+        width:100%;
+    }
+
+    .actions .btn{
+        flex:1;
+    }
+
+    .bottom-bar{
+        flex-wrap:wrap;
+    }
+
+    .bottom-text{
+        width:calc(100% - 50px);
+    }
+
+    .bottom-bar .primary{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">IH</div>
+
+    <div class="brand">
+        InstallHub <span>/ apps</span>
+    </div>
+
+    <div class="search-wrap">
+        <span class="search-icon">/</span>
+
+        <input
+            id="search"
+            class="search"
+            placeholder="Search applications..."
+            autocomplete="off"
+        >
+
+        <span class="shortcut">/</span>
+    </div>
+
+    <div class="header-status">
+        <span class="dot"></span>
+        WinGet ready
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+<aside class="sidebar">
+
+    <div class="sidebar-title">
+        Categories
+    </div>
+
+    <nav class="nav" id="nav"></nav>
+
+    <div class="sidebar-line"></div>
+
+    <div class="sidebar-info">
+        Select the applications you want on your
+        Windows PC. InstallHub creates a WinGet
+        setup for the selected applications.
+        <br><br>
+        <code>winget import</code>
+    </div>
+
+</aside>
+
+
+<main class="main">
+
+<div class="content">
+
+    <section class="page-head">
+
+        <div>
+            <h1>Set up your Windows PC</h1>
+
+            <p class="description">
+                Choose everything you need for a new PC.
+                Generate a WinGet setup file or a
+                traditional batch installer.
+            </p>
+        </div>
+
+        <div class="actions">
+
+            <button class="btn" id="selectVisible">
+                Select visible
+            </button>
+
+            <button class="btn" id="clear">
+                Clear
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <div class="toolbar">
+
+        <div class="selected-info">
+            <strong id="selectedCount">0</strong>
+            applications selected
+        </div>
+
+        <button class="btn" id="popular">
+            Popular
+        </button>
+
+        <button class="btn" id="reset">
+            Reset
+        </button>
+
+    </div>
+
+
+    <div class="section-head">
+
+        <div class="section-title" id="sectionTitle">
+            All Apps
+        </div>
+
+        <div class="section-count" id="resultCount">
+            0 apps
+        </div>
+
+    </div>
+
+
+    <div class="grid" id="grid"></div>
+
+
+    <div class="empty" id="empty">
+
+        <h3>No applications found</h3>
+
+        <p>
+            Try another search or category.
+        </p>
+
+    </div>
+
+</div>
+
+</main>
+
+</div>
+
+
+<div class="bottom-bar" id="bottomBar">
+
+    <div class="bottom-icon">✓</div>
+
+    <div class="bottom-text">
+
+        <div class="bottom-title">
+            <span id="bottomCount">0</span>
+            applications selected
+        </div>
+
+        <div class="bottom-sub">
+            Generate a Windows setup
+        </div>
+
+    </div>
+
+    <button class="btn primary" id="generate">
+        Generate setup
+    </button>
+
+</div>
+
+
+<div class="overlay" id="overlay">
+
+<div class="modal">
+
+    <div class="modal-head">
+
+        <div class="modal-title">
+            InstallHub setup
+        </div>
+
+        <button class="close" id="close">
+            ×
+        </button>
+
+    </div>
+
+
+    <div class="modal-tabs">
+
+        <button class="tab active" data-tab="bat">
+            Batch installer
+        </button>
+
+        <button class="tab" data-tab="json">
+            WinGet JSON
+        </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+        <textarea
+            id="code"
+            class="code"
+            readonly
+        ></textarea>
+
+    </div>
+
+
+    <div class="modal-footer">
+
+        <button class="btn" id="copy">
+            Copy
+        </button>
+
+        <button class="btn primary" id="download">
+            Download
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   INSTALLHUB V5 APP DATABASE
+   ========================================================= */
+
+const apps = [
+
+/* ---------------- GAMING ---------------- */
+
+["Steam","Valve","gaming","PC gaming platform.","Valve.Steam","steam",1],
+["Epic Games Launcher","Epic Games","gaming","Epic Games launcher.","EpicGames.EpicGamesLauncher","epicgames",1],
+["GOG Galaxy","GOG","gaming","Game library and launcher.","GOG.Galaxy","gogdotcom",1],
+["Battle.net","Blizzard","gaming","Blizzard game launcher.","Blizzard.BattleNet","battledotnet",1],
+["EA app","Electronic Arts","gaming","Electronic Arts launcher.","ElectronicArts.EADesktop","ea",1],
+["Ubisoft Connect","Ubisoft","gaming","Ubisoft game launcher.","Ubisoft.Connect","ubisoft",1],
+["Riot Client","Riot Games","gaming","Riot Games launcher.","RiotGames.RiotClient","riotgames",1],
+["Xbox","Microsoft","gaming","Xbox and PC Game Pass.","Microsoft.GamingApp","xbox",1],
+["Playnite","Playnite","gaming","Open source game library manager.","Playnite.Playnite","playnite",1],
+["Prism Launcher","Prism Launcher","gaming","Minecraft launcher.","PrismLauncher.PrismLauncher","prism",1],
+["CurseForge","Overwolf","gaming","Mods and addons manager.","Overwolf.CurseForge","curseforge",1],
+["NVIDIA App","NVIDIA","gaming","NVIDIA drivers and tools.","Nvidia.NvidiaApp","nvidia",1],
+["AMD Software","AMD","gaming","AMD graphics software.","AMD.AMDSoftware","amd",1],
+["OBS Studio","OBS Project","gaming","Streaming and recording.","OBSProject.OBSStudio","obsstudio",1],
+
+/* ---------------- COMMUNICATION ---------------- */
+
+["Discord","Discord","communication","Voice, video and text chat.","Discord.Discord","discord",1],
+["Telegram","Telegram","communication","Fast messaging application.","Telegram.TelegramDesktop","telegram",1],
+["Signal","Signal Foundation","communication","Private encrypted messenger.","OpenWhisperSystems.Signal","signal",1],
+["WhatsApp","Meta","communication","Desktop WhatsApp client.","9NKSQGP7F2NH","whatsapp",1],
+["Microsoft Teams","Microsoft","communication","Meetings and collaboration.","Microsoft.Teams","microsoftteams",1],
+["Zoom","Zoom","communication","Video meetings.","Zoom.Zoom","zoom",1],
+["Slack","Slack Technologies","communication","Team communication.","SlackTechnologies.Slack","slack",1],
+["Element","Element","communication","Matrix communication client.","Element.Element","element",1],
+["Viber","Rakuten","communication","Messaging and calling.","Rakuten.Viber","viber",1],
+["Thunderbird","Mozilla","communication","Email and calendar client.","Mozilla.Thunderbird","thunderbird",1],
+
+/* ---------------- BROWSERS ---------------- */
+
+["Google Chrome","Google","browser","Popular web browser.","Google.Chrome","googlechrome",1],
+["Mozilla Firefox","Mozilla","browser","Open-source web browser.","Mozilla.Firefox","firefox",1],
+["Brave","Brave Software","browser","Privacy-focused browser.","Brave.Brave","brave",1],
+["Vivaldi","Vivaldi Technologies","browser","Highly customizable browser.","VivaldiTechnologies.Vivaldi","vivaldi",1],
+["Opera","Opera","browser","Modern web browser.","Opera.Opera","opera",1],
+["Opera GX","Opera","browser","Gaming-oriented browser.","Opera.OperaGX","opera",1],
+["Tor Browser","Tor Project","browser","Privacy-oriented browser.","TorProject.TorBrowser","torproject",1],
+["Mullvad Browser","Mullvad","browser","Privacy-focused browser.","MullvadVPN.MullvadBrowser","mullvad",1],
+["LibreWolf","LibreWolf","browser","Hardened Firefox browser.",null,"librewolf",0],
+["Microsoft Edge","Microsoft","browser","Microsoft web browser.","Microsoft.Edge","microsoftedge",1],
+
+/* ---------------- PRIVACY ---------------- */
+
+["Proton VPN","Proton","privacy","Privacy-focused VPN.","Proton.ProtonVPN","protonvpn",1],
+["Mullvad VPN","Mullvad","privacy","Privacy-focused VPN.","MullvadVPN.MullvadVPN","mullvad",1],
+["NordVPN","Nord Security","privacy","VPN client.","NordSecurity.NordVPN","nordvpn",1],
+["Tailscale","Tailscale","privacy","Secure private networking.","Tailscale.Tailscale","tailscale",1],
+["Windscribe","Windscribe","privacy","VPN and privacy tools.","Windscribe.Windscribe","windscribe",1],
+["Bitwarden","Bitwarden","privacy","Open-source password manager.","Bitwarden.Bitwarden","bitwarden",1],
+["KeePassXC","KeePassXC","privacy","Offline password manager.","KeePassXCTeam.KeePassXC","keepassxc",1],
+["VeraCrypt","IDRIX","privacy","Disk encryption software.","IDRIX.VeraCrypt","veracrypt",1],
+["Cryptomator","Cryptomator","privacy","Encrypted cloud storage.","Cryptomator.Cryptomator","cryptomator",1],
+["GnuPG","GnuPG","privacy","OpenPGP encryption tools.","GnuPG.GnuPG","gnupg",1],
+
+/* ---------------- MEDIA ---------------- */
+
+["Spotify","Spotify","media","Music and podcasts.","Spotify.Spotify","spotify",1],
+["VLC","VideoLAN","media","Universal media player.","VideoLAN.VLC","vlcmediaplayer",1],
+["MPV","mpv","media","Lightweight media player.","shinchiro.mpv.net","mpv",1],
+["MusicBee","MusicBee","media","Music manager and player.","MusicBee.MusicBee","musicbee",1],
+["foobar2000","foobar2000","media","Advanced audio player.","PeterPawlowski.foobar2000","foobar2000",1],
+["Audacity","Audacity","media","Audio editor and recorder.","Audacity.Audacity","audacity",1],
+["HandBrake","HandBrake","media","Video transcoder.","HandBrake.HandBrake","handbrake",1],
+["OBS Studio","OBS Project","media","Recording and streaming.","OBSProject.OBSStudio","obsstudio",1],
+["Kodi","XBMC Foundation","media","Media center application.","XBMCFoundation.Kodi","kodi",1],
+["yt-dlp","yt-dlp","media","Command-line media downloader.","yt-dlp.yt-dlp","yt-dlp",1],
+
+/* ---------------- DEVELOPMENT ---------------- */
+
+["Visual Studio Code","Microsoft","development","Source code editor.","Microsoft.VisualStudioCode","visualstudiocode",1],
+["Visual Studio Community","Microsoft","development","Windows development IDE.","Microsoft.VisualStudio.2022.Community","visualstudio",1],
+["Git","Git","development","Distributed version control.","Git.Git","git",1],
+["GitHub Desktop","GitHub","development","GitHub desktop client.","GitHub.GitHubDesktop","github",1],
+["Python","Python Software Foundation","development","Python programming language.","Python.Python.3.13","python",1],
+["Node.js LTS","OpenJS Foundation","development","JavaScript runtime.","OpenJS.NodeJS.LTS","nodedotjs",1],
+["Docker Desktop","Docker","development","Container development platform.","Docker.DockerDesktop","docker",1],
+["Postman","Postman","development","API development platform.","Postman.Postman","postman",1],
+["PowerShell","Microsoft","development","Cross-platform shell.","Microsoft.PowerShell","powershell",1],
+["Windows Terminal","Microsoft","development","Modern terminal.","Microsoft.WindowsTerminal","windowsterminal",1],
+["JetBrains Toolbox","JetBrains","development","JetBrains IDE manager.","JetBrains.Toolbox","jetbrains",1],
+["Go","Go Authors","development","Go programming language.","GoLang.Go","go",1],
+["Rust","Rust Foundation","development","Rust programming language.","Rustlang.Rustup","rust",1],
+["Java 21","Oracle","development","Java development kit.","Oracle.JDK.21","openjdk",1],
+[".NET SDK","Microsoft","development",".NET development SDK.","Microsoft.DotNet.SDK.9","dotnet",1],
+["Android Studio","Google","development","Android development IDE.","Google.AndroidStudio","androidstudio",1],
+["Eclipse","Eclipse Foundation","development","Java IDE.","EclipseFoundation.Eclipse.IDE.Java","eclipse",1],
+["Neovim","Neovim","development","Modern Vim-based editor.","Neovim.Neovim","neovim",1],
+["CMake","Kitware","development","Cross-platform build system.","Kitware.CMake","cmake",1],
+["LLVM","LLVM Project","development","Compiler infrastructure.","LLVM.LLVM","llvm",1],
+
+/* ---------------- UTILITIES ---------------- */
+
+["7-Zip","7-Zip","utilities","File archiver.","7zip.7zip","7zip",1],
+["PowerToys","Microsoft","utilities","Windows power-user utilities.","Microsoft.PowerToys","microsoft",1],
+["Everything","Voidtools","utilities","Fast file search.","voidtools.Everything","files",1],
+["ShareX","ShareX","utilities","Screenshot and screen capture.","ShareX.ShareX","sharex",1],
+["Rufus","Rufus","utilities","Bootable USB creator.","Rufus.Rufus","rufus",1],
+["Notepad++","Notepad++","utilities","Advanced text editor.","Notepad++.Notepad++","notepadplusplus",1],
+["WinDirStat","WinDirStat","utilities","Disk usage analyzer.","WinDirStat.WinDirStat","windirstat",1],
+["WizTree","Antibody Software","utilities","Fast disk space analyzer.","AntibodySoftware.WizTree","wiztree",1],
+["HWiNFO","REALiX","utilities","Hardware information tool.","REALiX.HWiNFO","hwinfo",1],
+["CrystalDiskInfo","Crystal Dew World","utilities","Drive health monitor.","CrystalDewWorld.CrystalDiskInfo","crystaldiskinfo",1],
+["CPU-Z","CPUID","utilities","CPU and hardware information.","CPUID.CPU-Z","cpuz",1],
+["GPU-Z","TechPowerUp","utilities","Graphics card information.","TechPowerUp.GPU-Z","gpuz",1],
+["EverythingToolbar","voidtools","utilities","Everything integration.","stnkl.EverythingToolbar","files",1],
+["NanaZip","Microsoft","utilities","Modern 7-Zip fork.","M2Team.NanaZip","7zip",1],
+["PeaZip","Giorgiotani","utilities","File archiver.","Giorgiotani.Peazip","peazip",1],
+["WinRAR","RARLab","utilities","Archive manager.","RARLab.WinRAR","winrar",1],
+["AutoHotkey","AutoHotkey Foundation","utilities","Windows automation scripting.","AutoHotkey.AutoHotkey","autohotkey",1],
+["EarTrumpet","File-New-Project","utilities","Windows volume mixer.","File-New-Project.EarTrumpet","microsoft",1],
+
+/* ---------------- NETWORKING ---------------- */
+
+["Wireshark","Wireshark Foundation","networking","Network protocol analyzer.","WiresharkFoundation.Wireshark","wireshark",1],
+["FileZilla","FileZilla","networking","FTP and SFTP client.","FileZilla.Client","filezilla",1],
+["WinSCP","WinSCP","networking","SFTP and SCP client.","WinSCP.WinSCP","winscp",1],
+["PuTTY","PuTTY","networking","SSH and Telnet client.","PuTTY.PuTTY","putty",1],
+["OpenVPN","OpenVPN","networking","VPN client.","OpenVPNTechnologies.OpenVPN","openvpn",1],
+["WireGuard","WireGuard","networking","Modern VPN protocol client.","WireGuard.WireGuard","wireguard",1],
+["Termius","Termius","networking","SSH client.","Termius.Termius","termius",1],
+["MobaXterm","Mobatek","networking","Advanced terminal client.","Mobatek.MobaXterm","mobaxterm",1],
+
+/* ---------------- CLOUD ---------------- */
+
+["OneDrive","Microsoft","cloud","Microsoft cloud storage.","Microsoft.OneDrive","microsoft",1],
+["Google Drive","Google","cloud","Google Drive desktop client.","Google.Drive","google",1],
+["Dropbox","Dropbox","cloud","Cloud storage client.","Dropbox.Dropbox","dropbox",1],
+["MEGA","MEGA","cloud","Encrypted cloud storage.","Mega.MEGASync","mega",1],
+["Syncthing","Syncthing","cloud","Continuous file synchronization.","Syncthing.Syncthing","syncthing",1],
+["Nextcloud Desktop","Nextcloud","cloud","Open-source cloud sync.","Nextcloud.NextcloudDesktop","nextcloud",1],
+
+/* ---------------- REMOTE ---------------- */
+
+["AnyDesk","AnyDesk","remote","Remote desktop software.","AnyDeskSoftwareGmbH.AnyDesk","anydesk",1],
+["RustDesk","RustDesk","remote","Open-source remote desktop.","RustDesk.RustDesk","rustdesk",1],
+["TeamViewer","TeamViewer","remote","Remote support software.","TeamViewer.TeamViewer","teamviewer",1],
+["Parsec","Parsec","remote","Low-latency remote desktop.","Parsec.Parsec","parsec",1],
+
+/* ---------------- CREATIVE ---------------- */
+
+["Blender","Blender Foundation","creative","3D creation suite.","BlenderFoundation.Blender","blender",1],
+["GIMP","GIMP","creative","Open-source image editor.","GIMP.GIMP","gimp",1],
+["Krita","KDE","creative","Digital painting software.","KDE.Krita","krita",1],
+["Inkscape","Inkscape","creative","Vector graphics editor.","Inkscape.Inkscape","inkscape",1],
+["DaVinci Resolve","Blackmagic Design","creative","Professional video editor.","BlackmagicDesign.DaVinciResolve","davinciresolve",1],
+["Figma","Figma","creative","UI and product design.","Figma.Figma","figma",1],
+["FreeCAD","FreeCAD","creative","Parametric 3D CAD.","FreeCAD.FreeCAD","freecad",1],
+["Godot Engine","Godot Foundation","creative","Open-source game engine.","GodotEngine.GodotEngine","godot",1],
+["Unity Hub","Unity Technologies","creative","Unity project manager.","Unity.UnityHub","unity",1],
+
+/* ---------------- OFFICE ---------------- */
+
+["LibreOffice","The Document Foundation","office","Open-source office suite.","TheDocumentFoundation.LibreOffice","libreoffice",1],
+["Notion","Notion Labs","office","Notes and workspace.","Notion.Notion","notion",1],
+["Obsidian","Obsidian","office","Markdown knowledge base.","Obsidian.Obsidian","obsidian",1],
+["SumatraPDF","Krzysztof Kowalczyk","office","Lightweight PDF reader.","SumatraPDF.SumatraPDF","sumatrapdf",1],
+["Adobe Acrobat Reader","Adobe","office","PDF reader.","Adobe.Acrobat.Reader.64-bit","adobeacrobatreader",1],
+["Calibre","Kovid Goyal","office","E-book manager.","KovidGoyal.Calibre","calibre",1],
+["Zotero","Corporation for Digital Scholarship","office","Research reference manager.","Zotero.Zotero","zotero",1],
+["Anki","Ankitects","office","Spaced repetition flashcards.","Anki.Anki","anki",1],
+
+/* ---------------- AI ---------------- */
+
+["Ollama","Ollama","ai","Run language models locally.","Ollama.Ollama","ollama",1],
+["LM Studio","Element Labs","ai","Local AI model runner.","ElementLabs.LMStudio","lmstudio",1],
+["ChatGPT","OpenAI","ai","ChatGPT desktop application.","OpenAI.ChatGPT","openai",1],
+["Claude","Anthropic","ai","Claude desktop application.","Anthropic.Claude","anthropic",1],
+
+/* ---------------- WINDOWS ---------------- */
+
+["Microsoft Edge","Microsoft","windows","Microsoft web browser.","Microsoft.Edge","microsoftedge",1],
+["Windows Terminal","Microsoft","windows","Modern Windows terminal.","Microsoft.WindowsTerminal","windowsterminal",1],
+["PowerShell","Microsoft","windows","PowerShell shell.","Microsoft.PowerShell","powershell",1],
+["PowerToys","Microsoft","windows","Windows utilities.","Microsoft.PowerToys","microsoft",1],
+["WSL","Microsoft","windows","Windows Subsystem for Linux.","Microsoft.WSL","linux",1],
+["Sysinternals Suite","Microsoft","windows","Windows administration utilities.","Microsoft.SysinternalsSuite","microsoft",1],
+["Autoruns","Microsoft","windows","Startup and autorun manager.","Microsoft.Sysinternals.Autoruns","microsoft",1]
+
+];
+
+
+/*
+    Convert compact arrays into objects.
+*/
+
+const data = apps.map(a => ({
+    name:a[0],
+    publisher:a[1],
+    category:a[2],
+    description:a[3],
+    winget:a[4],
+    icon:a[5],
+    verified:Boolean(a[6])
+}));
+
+
+/* =========================================================
+   CATEGORIES
+   ========================================================= */
+
+const categories = {
+    all:"All Apps",
+    popular:"Popular",
+    gaming:"Gaming",
+    communication:"Communication",
+    browser:"Browsers",
+    privacy:"Privacy & VPN",
+    media:"Media",
+    development:"Development",
+    utilities:"Utilities",
+    networking:"Networking",
+    cloud:"Cloud",
+    remote:"Remote Access",
+    creative:"Creative",
+    office:"Office",
+    ai:"AI",
+    windows:"Windows"
+};
+
+
+const icons = {
+    all:"#",
+    popular:"★",
+    gaming:"G",
+    communication:"C",
+    browser:"W",
+    privacy:"P",
+    media:"M",
+    development:"</>",
+    utilities:"U",
+    networking:"N",
+    cloud:"C",
+    remote:"R",
+    creative:"A",
+    office:"O",
+    ai:"AI",
+    windows:"W"
+};
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let currentCategory = "all";
+let searchTerm = "";
+let selected = new Set();
+let currentTab = "bat";
+
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
+
+const nav = document.getElementById("nav");
+const grid = document.getElementById("grid");
+const search = document.getElementById("search");
+const empty = document.getElementById("empty");
+const sectionTitle = document.getElementById("sectionTitle");
+const resultCount = document.getElementById("resultCount");
+const selectedCount = document.getElementById("selectedCount");
+const bottomCount = document.getElementById("bottomCount");
+const bottomBar = document.getElementById("bottomBar");
+const overlay = document.getElementById("overlay");
+const code = document.getElementById("code");
+const toast = document.getElementById("toast");
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+function renderNav(){
+
+    nav.innerHTML = "";
+
+    Object.entries(categories).forEach(([key,label]) => {
+
+        const button = document.createElement("button");
+
+        button.className =
+            currentCategory === key
+                ? "active"
+                : "";
+
+        let count;
+
+        if(key === "all"){
+            count = data.length;
+        }
+        else if(key === "popular"){
+            count = data.filter(a => popularNames.includes(a.name)).length;
+        }
+        else{
+            count = data.filter(a => a.category === key).length;
+        }
+
+        button.innerHTML = `
+            <span class="nav-icon">
+                ${icons[key]}
+            </span>
+
+            ${label}
+
+            <span class="nav-count">
+                ${count}
+            </span>
+        `;
+
+        button.addEventListener("click",() => {
+
+            currentCategory = key;
+
+            renderNav();
+            render();
+
+        });
+
+        nav.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================================
+   POPULAR
+   ========================================================= */
+
+const popularNames = [
+    "Steam",
+    "Discord",
+    "Spotify",
+    "Google Chrome",
+    "Mozilla Firefox",
+    "Visual Studio Code",
+    "7-Zip",
+    "VLC",
+    "OBS Studio",
+    "Git",
+    "PowerToys",
+    "Notepad++",
+    "Bitwarden",
+    "Proton VPN",
+    "Docker Desktop",
+    "Telegram",
+    "WhatsApp",
+    "Brave",
+    "Everything",
+    "ShareX"
+];
+
+
+/* =========================================================
+   FILTER
+   ========================================================= */
+
+function getVisible(){
+
+    return data.filter(app => {
+
+        const categoryMatch =
+            currentCategory === "all" ||
+            (
+                currentCategory === "popular"
+                    ? popularNames.includes(app.name)
+                    : app.category === currentCategory
+            );
+
+        const query =
+            `${app.name} ${app.publisher} ${app.description} ${app.category}`
+            .toLowerCase();
+
+        return categoryMatch &&
+               query.includes(searchTerm);
+
+    });
+
+}
+
+
+/* =========================================================
+   RENDER CARDS
+   ========================================================= */
+
+function render(){
+
+    const list = getVisible();
+
+    grid.innerHTML = "";
+
+    sectionTitle.textContent =
+        categories[currentCategory];
+
+    resultCount.textContent =
+        `${list.length} ${list.length === 1 ? "app" : "apps"}`;
+
+    empty.style.display =
+        list.length ? "none" : "block";
+
+
+    list.forEach(app => {
+
+        const card = document.createElement("article");
+
+        const isSelected =
+            selected.has(app.name);
+
+        card.className =
+            "card" +
+            (isSelected ? " selected" : "");
+
+
+        const initials =
+            app.name
+                .split(/\s+/)
+                .slice(0,2)
+                .map(x => x[0])
+                .join("")
+                .toUpperCase();
+
+
+        const iconUrl =
+            app.icon.startsWith("http")
+                ? app.icon
+                : `https://cdn.simpleicons.org/${app.icon}`;
+
+
+        card.innerHTML = `
+
+            <div class="checkbox">
+                ✓
+            </div>
+
+            <div class="app-top">
+
+                <div class="icon">
+
+                    <img
+                        src="${iconUrl}"
+                        alt=""
+                        onerror="
+                            this.style.display='none';
+                            this.parentElement.innerHTML='<span class=\\'fallback\\'>${initials}</span>'
+                        "
+                    >
+
+                </div>
+
+                <div>
+
+                    <div class="app-name">
+                        ${escapeHTML(app.name)}
+                    </div>
+
+                    <div class="publisher">
+                        ${escapeHTML(app.publisher)}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="app-description">
+                ${escapeHTML(app.description)}
+            </div>
+
+            <div class="card-bottom">
+
+                <span class="badge ${app.verified ? "verified" : "review"}">
+                    ${app.verified ? "Verified" : "Manual review"}
+                </span>
+
+                <span class="select-label">
+                    ${isSelected ? "Selected" : "Select"}
+                </span>
+
+            </div>
+        `;
+
+
+        card.addEventListener("click",() => {
+
+            if(selected.has(app.name)){
+                selected.delete(app.name);
+            }
+            else{
+                selected.add(app.name);
+            }
+
+            updateSelection();
+            render();
+
+        });
+
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
+
+function updateSelection(){
+
+    selectedCount.textContent =
+        selected.size;
+
+    bottomCount.textContent =
+        selected.size;
+
+    bottomBar.classList.toggle(
+        "show",
+        selected.size > 0
+    );
+
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+search.addEventListener("input",e => {
+
+    searchTerm =
+        e.target.value.trim().toLowerCase();
+
+    render();
+
+});
+
+
+/* =========================================================
+   SELECT VISIBLE
+   ========================================================= */
+
+document
+.getElementById("selectVisible")
+.addEventListener("click",() => {
+
+    getVisible().forEach(app => {
+        selected.add(app.name);
+    });
+
+    updateSelection();
+    render();
+
+});
+
+
+/* =========================================================
+   CLEAR
+   ========================================================= */
+
+document
+.getElementById("clear")
+.addEventListener("click",() => {
+
+    selected.clear();
+
+    updateSelection();
+    render();
+
+});
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+document
+.getElementById("reset")
+.addEventListener("click",() => {
+
+    currentCategory = "all";
+    searchTerm = "";
+    search.value = "";
+
+    renderNav();
+    render();
+
+});
+
+
+/* =========================================================
+   POPULAR BUTTON
+   ========================================================= */
+
+document
+.getElementById("popular")
+.addEventListener("click",() => {
+
+    currentCategory = "popular";
+
+    renderNav();
+    render();
+
+});
+
+
+/* =========================================================
+   GENERATE BAT
+   ========================================================= */
+
+function generateBat(){
+
+    const selectedApps =
+        data.filter(a => selected.has(a.name));
+
+    const verified =
+        selectedApps.filter(a => a.verified && a.winget);
+
+    const manual =
+        selectedApps.filter(a => !a.verified || !a.winget);
+
+
+    const lines = [
+
+        "@echo off",
+        "setlocal",
+        "title InstallHub V5 Setup",
+        "",
+        "echo ============================================",
+        "echo              INSTALLHUB V5",
+        "echo ============================================",
+        "echo.",
+        "echo Checking WinGet...",
+        "winget --version >nul 2>&1",
+        "if errorlevel 1 goto NO_WINGET",
+        "",
+        "echo Installing selected applications...",
+        "echo."
+
+    ];
+
+
+    verified.forEach(app => {
+
+        lines.push(
+            `echo [INSTALL] ${app.name}`
+        );
+
+        lines.push(
+            `winget install --id "${app.winget}" -e --source winget --accept-source-agreements --accept-package-agreements`
+        );
+
+        lines.push("");
+
+    });
+
+
+    if(manual.length){
+
+        lines.push(
+            "echo ============================================"
+        );
+
+        lines.push(
+            "echo MANUAL REVIEW"
+        );
+
+        lines.push(
+            "echo ============================================"
+        );
+
+        manual.forEach(app => {
+
+            lines.push(
+                `echo [MANUAL] ${app.name}`
+            );
+
+        });
+
+        lines.push("");
+
+    }
+
+
+    lines.push(
+        "echo.",
+        "echo ============================================",
+        "echo Installation finished.",
+        "echo ============================================",
+        "pause",
+        "exit /b 0",
+        "",
+        ":NO_WINGET",
+        "echo WinGet was not found.",
+        "echo Please install/update Microsoft App Installer.",
+        "pause",
+        "exit /b 1"
+    );
+
+
+    return lines.join("\r\n");
+
+}
+
+
+/* =========================================================
+   GENERATE JSON
+   ========================================================= */
+
+function generateJSON(){
+
+    const selectedApps =
+        data.filter(a =>
+            selected.has(a.name) &&
+            a.verified &&
+            a.winget
+        );
+
+
+    const json = {
+
+        Sources:[
+            {
+                Name:"winget",
+                Type:"Microsoft.PreIndexed.Package"
+            }
+        ],
+
+        Packages:
+            selectedApps.map(app => ({
+                PackageIdentifier:app.winget
+            }))
+
+    };
+
+
+    return JSON.stringify(
+        json,
+        null,
+        2
+    );
+
+}
+
+
+/* =========================================================
+   OPEN MODAL
+   ========================================================= */
+
+document
+.getElementById("generate")
+.addEventListener("click",() => {
+
+    if(!selected.size){
+
+        showToast(
+            "Select at least one application."
+        );
+
+        return;
+
+    }
+
+    currentTab = "bat";
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(t => t.classList.remove("active"));
+
+    document
+        .querySelector('[data-tab="bat"]')
+        .classList.add("active");
+
+    code.value = generateBat();
+
+    overlay.classList.add("open");
+
+});
+
+
+/* =========================================================
+   TABS
+   ========================================================= */
+
+document
+.querySelectorAll(".tab")
+.forEach(tab => {
+
+    tab.addEventListener("click",() => {
+
+        currentTab =
+            tab.dataset.tab;
+
+        document
+            .querySelectorAll(".tab")
+            .forEach(t =>
+                t.classList.remove("active")
+            );
+
+        tab.classList.add("active");
+
+
+        code.value =
+            currentTab === "bat"
+                ? generateBat()
+                : generateJSON();
+
+    });
+
+});
+
+
+/* =========================================================
+   CLOSE
+   ========================================================= */
+
+document
+.getElementById("close")
+.addEventListener("click",() => {
+
+    overlay.classList.remove("open");
+
+});
+
+
+overlay.addEventListener("click",e => {
+
+    if(e.target === overlay){
+
+        overlay.classList.remove("open");
+
+    }
+
+});
+
+
+/* =========================================================
+   COPY
+   ========================================================= */
+
+document
+.getElementById("copy")
+.addEventListener("click",async() => {
+
+    try{
+
+        await navigator.clipboard.writeText(
+            code.value
+        );
+
+    }
+    catch{
+
+        code.select();
+
+        document.execCommand("copy");
+
+    }
+
+    showToast("Copied to clipboard");
+
+});
+
+
+/* =========================================================
+   DOWNLOAD
+   ========================================================= */
+
+document
+.getElementById("download")
+.addEventListener("click",() => {
+
+    const isBat =
+        currentTab === "bat";
+
+    const content =
+        code.value;
+
+    const blob =
+        new Blob(
+            [content],
+            {
+                type:
+                    isBat
+                        ? "application/octet-stream"
+                        : "application/json"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+        isBat
+            ? "InstallHub-Setup.bat"
+            : "InstallHub-Setup.json";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    showToast(
+        isBat
+            ? "BAT downloaded"
+            : "WinGet JSON downloaded"
+    );
+
+});
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+function showToast(message){
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    clearTimeout(window.__toast);
+
+    window.__toast =
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        },2200);
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================================================
+   KEYBOARD
+   ========================================================= */
+
+document.addEventListener("keydown",e => {
+
+    if(
+        e.key === "/" &&
+        document.activeElement !== search
+    ){
+
+        e.preventDefault();
+
+        search.focus();
+
+    }
+
+
+    if(e.key === "Escape"){
+
+        overlay.classList.remove("open");
+
+    }
+
+});
+
+
+/* =========================================================
+   INIT
+   ========================================================= */
+
+renderNav();
+render();
+updateSelection();
+
+</script>
+
+</body>
+</html>
